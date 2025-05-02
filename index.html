@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multi Forms</title>
+    <link rel="stylesheet" href="forms.css" />
+  </head>
+  <body>
+    <form id="multi-form">
+      <h2>Multi Forms</h2>
+
+      <template id="form-template">
+        <div class="form-card">
+          <label>
+            ID:
+            <input
+              type="text"
+              name="id[]"
+              data-name="ID"
+              data-type="number"
+              data-min="1"
+              data-max="100"
+              required
+              onblur="handleValidation(this)"
+            />
+            <div class="error-message"></div>
+          </label>
+          <label>
+            Nombre:
+            <input
+              type="text"
+              name="nombre[]"
+              data-name="Nombre"
+              data-type="string"
+              data-minlength="2"
+              data-maxlength="30"
+              required
+              onblur="handleValidation(this)"
+            />
+            <div class="error-message"></div>
+          </label>
+          <button type="button" class="remove">Eliminar</button>
+        </div>
+      </template>
+      <div class="form-card base-card">
+        <label for="id-0">
+          ID:
+          <input
+            id="id-0"
+            type="text"
+            name="id[]"
+            data-name="ID"
+            data-type="number"
+            data-min="1"
+            data-max="100"
+            required
+            onblur="handleValidation(this)"
+          />
+          <div class="error-message"></div>
+        </label>
+        <label for="nombre-0">
+          Nombre:
+          <input
+            id="nombre-0"
+            type="text"
+            name="nombre[]"
+            data-name="Nombre"
+            data-type="string"
+            data-minlength="2"
+            data-maxlength="30"
+            required
+            onblur="handleValidation(this)"
+          />
+          <div class="error-message"></div>
+        </label>
+        <button type="button" id="add-form">Agregar más</button>
+      </div>
+
+      <div id="forms-container"></div>
+
+      <button type="submit" id="send-form">Enviar</button>
+    </form>
+
+    <script src="forms.js"></script>
+    <script src="validator.js"></script>
+
+    <script>
+      function handleValidation(elem) {
+        const error = validateInput(elem);
+        if (error) {
+          showError(elem, error);
+        } else {
+          clearError(elem);
+        }
+      }
+
+      const form = document.getElementById("multi-form");
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        let hasError = false;
+        const inputs = form.querySelectorAll("input[data-type]");
+
+        inputs.forEach((input) => {
+          const error = validateInput(input);
+          if (error) {
+            showError(input, error);
+            hasError = true;
+          } else {
+            clearError(input);
+          }
+        });
+
+        if (hasError) {
+          alert("Hay errores en el formulario. Corrígelos antes de continuar.");
+        } else {
+          alert("Formulario válido. Enviando...");
+          //  form.submit();
+        }
+      });
+    </script>
+  </body>
+</html>
